@@ -5,7 +5,7 @@ Simple Arduino Yún light control application
 
 ## Features
 - Remotely turns on or off a pin in the Arduino Yún
-- Shows the actual using AJAX (and zepto.js)
+- Shows the actual state using AJAX (and zepto.js)
 - Simple and with a little bit of design.
 
 ## Installation
