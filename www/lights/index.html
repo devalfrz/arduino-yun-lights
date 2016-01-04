@@ -1,0 +1,82 @@
+
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Lights</title>
+    <link rel="apple-touch-icon" href="img/icon-touch.png">
+    <link rel="icon" sizes="192x192" href="img/icon-touch.png">
+    <link rel="shortcut icon" href="img/favicon.ico">
+    <meta name="msapplication-TileColor" content="#20B2AA">
+    <meta name="msapplication-TileImage" content="img/icon-tile.png">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
+    <style>
+      body {
+        color: black;
+        font-family: "Lucida Console", Monaco, monospace;
+        text-align: center;  
+      }
+      #status{
+        margin: 30px auto;
+      }
+      #buttons{
+      }
+      button{
+        color: white;
+        border-style: none;
+        font-size: 4em;
+        display: inline-block;
+      }
+      #lights-on{
+        background-color: #ac2925;
+        display: none;
+      }
+      #lights-off{
+        background-color: black;
+        display: none;
+      }
+    </style>
+    <script type="text/javascript" src="js/zepto.min.js"></script>
+    <script type="text/javascript">
+      function lights(s){
+        $.ajax({
+          type: 'GET',
+          url: '/arduino/'+s,
+          timeout: 10000,
+          context: $('body'),
+          success: function(data){
+            if(data == '0'){
+              $('#lights-on').hide();
+              $('#lights-off').show();
+              $('#status').text('Lights are ON');                              
+              $('body').css('background-color','#337ab7');                        
+              $('body').css('color','white');
+            }else{
+              $('#lights-off').hide();
+              $('#lights-on').show();
+              $('#status').text('Lights are OFF');
+              $('body').css('background-color','black');
+              $('body').css('color','white');
+            }
+          },
+          error: function(xhr, type){
+            $('#status').html('Arduino is Grumpy... <a href="/lights/">Try Again!</a>');
+          }
+        })
+      }
+    </script>
+  </head>
+  <body>
+    <div id="status" onload="setInterval(refresh, 1000);">
+      <span id="content">Waiting for Arduino...</span>
+    </div>
+    <div id="buttons">
+      <button id="lights-on" onClick="lights('lights-on')">ON</button>
+      <button id="lights-off" onClick="lights('lights-off')">OFF</button>
+    </div>
+    <script>
+      lights('status');
+    </script>
+  </body>
+</html>
+
