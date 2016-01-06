@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html>
   <head>
@@ -39,6 +38,7 @@
     <script type="text/javascript" src="js/zepto.min.js"></script>
     <script type="text/javascript">
       function lights(s){
+        $('button').each(function(){this.disabled = true});
         $.ajax({
           type: 'GET',
           url: '/arduino/'+s,
@@ -58,9 +58,11 @@
               $('body').css('background-color','black');
               $('body').css('color','white');
             }
+            $('button').each(function(){this.disabled = false});
           },
           error: function(xhr, type){
             $('#status').html('Arduino is Grumpy... <a href="/lights/">Try Again!</a>');
+            $('button').each(function(){this.disabled = false});
           }
         })
       }
