@@ -37,7 +37,9 @@
     </style>
     <script type="text/javascript" src="js/zepto.min.js"></script>
     <script type="text/javascript">
+      var busy = false;
       function lights(s){
+        busy = true;
         $('button').each(function(){this.disabled = true});
         $.ajax({
           type: 'GET',
@@ -58,14 +60,21 @@
               $('body').css('background-color','black');
               $('body').css('color','white');
             }
+            busy = false;
             $('button').each(function(){this.disabled = false});
           },
           error: function(xhr, type){
             $('#status').html('Arduino is Grumpy... <a href="/lights/">Try Again!</a>');
+            busy = false;
             $('button').each(function(){this.disabled = false});
           }
         })
       }
+      window.setInterval(function(){
+        if(!busy){
+          lights('status');
+        }
+      },5000)
     </script>
   </head>
   <body>
