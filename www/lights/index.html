@@ -18,6 +18,13 @@
       #status{
         margin: 30px auto;
       }
+      #loading{
+        display: inline-block;
+        background-image: url('img/loading.gif');
+        height: 16px;
+        width: 16px;
+        margin: 0 5px;
+      }
       #buttons{
       }
       button{
@@ -39,8 +46,11 @@
     <script type="text/javascript">
       var busy = false;
       function lights(s){
-        busy = true;
-        $('button').each(function(){this.disabled = true});
+        if(s != 'status'){
+          busy = true;
+          $('button').each(function(){this.disabled = true});
+          $('#loading').show();
+        }
         $.ajax({
           type: 'GET',
           url: '/arduino/'+s,
@@ -50,23 +60,25 @@
             if(data == '0'){
               $('#lights-on').hide();
               $('#lights-off').show();
-              $('#status').text('Lights are ON');                              
+              $('#status #content').text('Lights are ON');                              
               $('body').css('background-color','#337ab7');                        
               $('body').css('color','white');
             }else{
               $('#lights-off').hide();
               $('#lights-on').show();
-              $('#status').text('Lights are OFF');
+              $('#status #content').text('Lights are OFF');
               $('body').css('background-color','black');
               $('body').css('color','white');
             }
             busy = false;
             $('button').each(function(){this.disabled = false});
+            $('#loading').hide();
           },
           error: function(xhr, type){
-            $('#status').html('Arduino is Grumpy... <a href="/lights/">Try Again!</a>');
+            $('#status #content').html('Arduino is Grumpy... <a href="/lights/">Try Again!</a>');
             busy = false;
             $('button').each(function(){this.disabled = false});
+            $('#loading').hide();
           }
         })
       }
@@ -79,7 +91,7 @@
   </head>
   <body>
     <div id="status">
-      <span id="content">Waiting for Arduino...</span>
+      <span id="loading"></span><span id="content">Waiting for Arduino...</span>
     </div>
     <div id="buttons">
       <button id="lights-on" onClick="lights('lights-on')">ON</button>
