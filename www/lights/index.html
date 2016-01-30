@@ -11,8 +11,7 @@
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no"/>
     <style>
       body {
-        background-color: black;
-        color: white;
+        color: black;
         font-family: "Lucida Console", Monaco, monospace;
         text-align: center;  
       }
@@ -57,8 +56,9 @@
           url: '/arduino/'+s,
           timeout: 10000,
           context: $('body'),
+          dataType: 'json',
           success: function(data){
-            if(data == '0'){
+            if(data.state == 0){
               $('#lights-on').hide();
               $('#lights-off').show();
               $('#status #content').text('Lights are ON');                              
