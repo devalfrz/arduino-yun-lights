@@ -25,6 +25,9 @@ void loop() {
     else if (command == "lights-off") {
       digitalWrite(11,HIGH);
     }
+    else if (command == "lights-toggle") {
+      digitalWrite(11,!digitalRead(11));
+    }
     response = String(digitalRead(11));
     client.print(String("{\"state\":"+response+"}"));
     client.stop();
